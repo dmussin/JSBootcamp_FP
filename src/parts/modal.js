@@ -1,44 +1,5 @@
 function modal() {
 
-
-	// const popup = document.querySelector(".popup"),
-	// 	popup_engineer = document.querySelector(".popup_engineer"),
-	// 	body = document.querySelector("body");
-
-
-	// function showModal(modal) {
-	// 	modal.style.display = "block";
-	// 	document.body.style.overflow = "hidden";
-	// }
-
-	// function hideModal(modCloseBtn) {
-	// 	[...overlay].forEach(element => {
-	// 		element.style.display = "none";
-	// 	});
-	// 	document.body.style.overflow = "";
-
-	// 	let statusMessage = document.querySelector('.status');
-	// 	if (statusMessage != undefined) {
-	// 		statusMessage.innerHTML = '';
-	// 	}
-	// }
-
-	// body.addEventListener("click", e => {
-	// 	let target = e.target;
-
-	// 	// Modal
-
-	// 	if (target && target.classList.contains("header_btn")) {
-	// 		e.preventDefault();
-	// 		showModal(popup_engineer);
-	// 	}
-	// 	if (target && target.classList.contains("phone_link")) {
-	// 		e.preventDefault();
-	// 		showModal(popup);
-	// 	}
-	// 
-	// });
-
 //Modal 
 
 const buttonEngeneer = document.querySelector('.popup_engineer_btn'),
@@ -65,7 +26,7 @@ popupModal = document.querySelector('.popup');
 
 callBack.forEach(element => {
 element.addEventListener('click', () => {
-	
+
 	popupModal.style.display = "block";
 
 });
