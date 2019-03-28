@@ -1,7 +1,6 @@
 {
   "name": "FinalProject",
   "version": "1.0.0",
-  "description": "",
   "main": "webpack.config.js",
   "dependencies": {},
   "devDependencies": {
@@ -30,5 +29,6 @@
   "bugs": {
     "url": "https://github.com/stormy377/JSBootcamp_FP/issues"
   },
-  "homepage": "https://github.com/stormy377/JSBootcamp_FP#readme"
+  "homepage": "https://github.com/stormy377/JSBootcamp_FP#readme",
+  "description": ""
 }

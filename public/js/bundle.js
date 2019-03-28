@@ -11297,8 +11297,12 @@ __webpack_require__(/*! formdata-polyfill */ "./node_modules/formdata-polyfill/f
 window.addEventListener("DOMContentLoaded", function () {
   'use strict';
 
-  var modal = __webpack_require__(/*! ./parts/modal.js */ "./src/parts/modal.js");
+  var timer = __webpack_require__(/*! ./parts/timer.js */ "./src/parts/timer.js"),
+      form = __webpack_require__(/*! ./parts/form.js */ "./src/parts/form.js"),
+      modal = __webpack_require__(/*! ./parts/modal.js */ "./src/parts/modal.js");
 
+  timer();
+  form();
   modal();
 });
 
@@ -11316,6 +11320,19 @@ if ('NodeList' in window && !NodeList.prototype.forEach) {
 
 /***/ }),
 
+/***/ "./src/parts/form.js":
+/*!***************************!*\
+  !*** ./src/parts/form.js ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function form() {}
+
+module.exports = form;
+
+/***/ }),
+
 /***/ "./src/parts/modal.js":
 /*!****************************!*\
   !*** ./src/parts/modal.js ***!
@@ -11324,36 +11341,6 @@ if ('NodeList' in window && !NodeList.prototype.forEach) {
 /***/ (function(module, exports) {
 
 function modal() {
-  // const popup = document.querySelector(".popup"),
-  // 	popup_engineer = document.querySelector(".popup_engineer"),
-  // 	body = document.querySelector("body");
-  // function showModal(modal) {
-  // 	modal.style.display = "block";
-  // 	document.body.style.overflow = "hidden";
-  // }
-  // function hideModal(modCloseBtn) {
-  // 	[...overlay].forEach(element => {
-  // 		element.style.display = "none";
-  // 	});
-  // 	document.body.style.overflow = "";
-  // 	let statusMessage = document.querySelector('.status');
-  // 	if (statusMessage != undefined) {
-  // 		statusMessage.innerHTML = '';
-  // 	}
-  // }
-  // body.addEventListener("click", e => {
-  // 	let target = e.target;
-  // 	// Modal
-  // 	if (target && target.classList.contains("header_btn")) {
-  // 		e.preventDefault();
-  // 		showModal(popup_engineer);
-  // 	}
-  // 	if (target && target.classList.contains("phone_link")) {
-  // 		e.preventDefault();
-  // 		showModal(popup);
-  // 	}
-  // 
-  // });
   //Modal 
   var buttonEngeneer = document.querySelector('.popup_engineer_btn'),
       popupEngineer = document.querySelector('.popup_engineer');
@@ -11385,6 +11372,72 @@ function modal() {
 }
 
 module.exports = modal;
+
+/***/ }),
+
+/***/ "./src/parts/timer.js":
+/*!****************************!*\
+  !*** ./src/parts/timer.js ***!
+  \****************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function timer() {
+  var deadline = '2019-07-04T00:00';
+
+  function getTimeRemaining(endtime) {
+    var t = Date.parse(endtime) - Date.parse(new Date()),
+        seconds = Math.floor(t / 1000 % 60).toString(),
+        minutes = Math.floor(t / 1000 / 60 % 60).toString(),
+        hours = Math.floor(t / 1000 / 60 / 60 % 24).toString(),
+        days = Math.floor(t / (1000 * 60 * 60 * 24)).toString();
+
+    function addZero(arg) {
+      if (arg.length < 2) {
+        arg = '0' + arg;
+      }
+
+      return arg;
+    }
+
+    return {
+      'total': t,
+      'hours': addZero(hours),
+      'minutes': addZero(minutes),
+      'seconds': addZero(seconds),
+      'days': addZero(days)
+    };
+  }
+
+  function setClock(id, endtime) {
+    var timer = document.getElementById(id),
+        days = timer.querySelector('.days'),
+        hours = timer.querySelector('.hours'),
+        minutes = timer.querySelector('.minutes'),
+        seconds = timer.querySelector('.seconds'),
+        timeInterval = setInterval(updateClock, 1000);
+
+    function updateClock() {
+      var t = getTimeRemaining(endtime);
+      days.textContent = t.days;
+      hours.textContent = t.hours;
+      minutes.textContent = t.minutes;
+      seconds.textContent = t.seconds;
+
+      if (t.total <= 0) {
+        days.textContent = '00';
+        hours.textContent = '00';
+        minutes.textContent = '00';
+        seconds.textContent = '00';
+        clearInterval(timeInterval);
+      }
+    }
+  }
+
+  setClock('timer', deadline);
+}
+
+module.exports = timer;
 
 /***/ }),
 

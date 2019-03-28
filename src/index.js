@@ -8,10 +8,15 @@ window.addEventListener("DOMContentLoaded", function () {
 
 	let 
 	
+	timer = require('./parts/timer.js'),
+	form = require('./parts/form.js'),
 	modal = require('./parts/modal.js');
 	
 
+timer();
+form();
 modal();
+
  
 
 });
