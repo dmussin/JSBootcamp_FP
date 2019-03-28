@@ -11323,69 +11323,63 @@ if ('NodeList' in window && !NodeList.prototype.forEach) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
-
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
-
 function modal() {
-  var popup = document.querySelector(".popup"),
-      popup_engineer = document.querySelector(".popup_engineer"),
-      body = document.querySelector("body"),
-      overleyPicture = document.createElement("div"),
-      overlay = document.querySelector('.overlay'),
-      close = document.querySelector('.popup-close'); // body.appendChild(overleyPicture);
-  // overleyPicture.classList.add('bigPicture', 'overlay', 'animated', 'fadeIn');
-  // // let overlay = document.querySelectorAll(".overlay");
-
-  function showModal(modal) {
-    modal.style.display = "block";
-    document.body.style.overflow = "hidden";
-  } // close.addEventListener('click', () => {
-  // 	if (document.querySelector('.status') !== null) {
-  // 		document.querySelector('.status').innerHTML = '';
-  // 	}
-  // 		overlay.style.display = 'none';
-  // 		document.body.style.overflow = '';
+  // const popup = document.querySelector(".popup"),
+  // 	popup_engineer = document.querySelector(".popup_engineer"),
+  // 	body = document.querySelector("body");
+  // function showModal(modal) {
+  // 	modal.style.display = "block";
+  // 	document.body.style.overflow = "hidden";
+  // }
+  // function hideModal(modCloseBtn) {
+  // 	[...overlay].forEach(element => {
+  // 		element.style.display = "none";
   // 	});
+  // 	document.body.style.overflow = "";
+  // 	let statusMessage = document.querySelector('.status');
+  // 	if (statusMessage != undefined) {
+  // 		statusMessage.innerHTML = '';
+  // 	}
+  // }
+  // body.addEventListener("click", e => {
+  // 	let target = e.target;
+  // 	// Modal
+  // 	if (target && target.classList.contains("header_btn")) {
+  // 		e.preventDefault();
+  // 		showModal(popup_engineer);
+  // 	}
+  // 	if (target && target.classList.contains("phone_link")) {
+  // 		e.preventDefault();
+  // 		showModal(popup);
+  // 	}
+  // 
+  // });
+  //Modal 
+  var buttonEngeneer = document.querySelector('.popup_engineer_btn'),
+      popupEngineer = document.querySelector('.popup_engineer');
+  buttonEngeneer.addEventListener('click', function () {
+    popupEngineer.style.display = "block";
+  });
+  popupEngineer.addEventListener('click', function (event) {
+    var target = event.target;
 
+    if (target.classList.contains('popup_close') || target.parentNode.classList.contains('popup_close') || target.classList.contains('popup_engineer')) {
+      popupEngineer.style.display = 'none';
+    }
+  }); //Modal callback
 
-  function hideModal(modCloseBtn) {
-    _toConsumableArray(overlay).forEach(function (element) {
-      element.style.display = "none";
+  var callBack = document.querySelectorAll('.phone_link'),
+      popupModal = document.querySelector('.popup');
+  callBack.forEach(function (element) {
+    element.addEventListener('click', function () {
+      popupModal.style.display = "block";
     });
+  });
+  popupModal.addEventListener('click', function (event) {
+    var target = event.target;
 
-    document.body.style.overflow = "";
-    var statusMessage = document.querySelector('.status');
-
-    if (statusMessage != undefined) {
-      statusMessage.innerHTML = '';
-    }
-  }
-
-  body.addEventListener("click", function (e) {
-    var target = e.target; // Modal
-
-    if (target && target.classList.contains("header_btn")) {
-      e.preventDefault();
-      showModal(popup_engineer);
-    }
-
-    if (target && target.classList.contains("phone_link")) {
-      e.preventDefault();
-      showModal(popup);
-    }
-
-    if (target && target.classList.contains("close_btn") || target.classList.contains("overlay")) {
-      hideModal(target);
-    }
-
-    if (target && target.classList.contains("lupa") || target.classList.contains("small_picture")) {
-      e.preventDefault();
-      bigPictures(target);
+    if (target.classList.contains('popup_close') || target.parentNode.classList.contains('popup_close') || target.classList.contains('popup')) {
+      popupModal.style.display = 'none';
     }
   });
 }
