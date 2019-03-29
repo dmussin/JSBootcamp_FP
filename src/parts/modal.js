@@ -1,75 +1,67 @@
 function modal() {
 
-//Modal 
+//Мodal
 
-let buttonEngeneer = document.querySelector('.popup_engineer_btn'),
-	  
-	popupEngineer = document.querySelector('.popup_engineer'),
-	 callBack = document.querySelectorAll('.phone_link'),
-	 glazingPriceBtn = document.querySelectorAll('.glazing_price_btn'),
-	 popupCalc = document.querySelector('.popup_calc'),
-	 popupCalcClose = document.querySelector('.popup_calc_close'),
-	 balconIcons = document.querySelector('.balcon_icons'),
-	 bigImg = document.querySelectorAll('.big_img img');
-     popupModal = document.querySelector('.popup');
+let popupEngineer = document.querySelector('.popup_engineer'),
+	headerBtn = document.querySelector('.header_btn'),
+    popupClose = document.querySelectorAll('.popup_close');
 
-buttonEngeneer.addEventListener('click', () => {
+    headerBtn.addEventListener('click', function(){
+        popupEngineer.style.display = 'flex';
+    });
+
+    popupEngineer.addEventListener('click', function(event){
+        if (event.target == modalEngineer) {
+            popupEngineer.style.display = 'none';
+        }
+	});
 	
-popupEngineer.style.display = 'block';		
-});
+	popupClose[1].addEventListener('click', function(){
+        popupEngineer.style.display = 'none';
+    });
 
-popupEngineer.addEventListener('click', (event) => {
-const target = event.target;
+    //Modal callback
+    let popupModal = document.querySelector('.popup'),
+	    callBack = document.querySelectorAll('.phone_link')[1],
+		contactBtn = document.querySelector('.contact_us_wrap');
 
-if (target.classList.contains('popup_close') ||
-target.parentNode.classList.contains('popup_close')||
-target.classList.contains('popup_engineer')) 
-{
-	popupEngineer.style.display = 'none';
-}
-});
+    contactBtn.addEventListener('click', function(event){
+        event.preventDefault();
+        popupModal.style.display = 'flex';
+    });
 
-//Modal callback
+    callBack.addEventListener('click', function(event){
+        event.preventDefault();
+        popupModal.style.display = 'flex';
+    });
 
+    popupClose[0].addEventListener('click', function(){
+        popupModal.style.display = 'none';
+    });
 
-callBack.forEach(element => {
-element.addEventListener('click', () => {
-
-	popupModal.style.display = 'block';
-
-});
-
-});
-popupModal.addEventListener('click', (event) => {
-const target = event.target;
-
-
-
-if (target.classList.contains('popup_close') || 
-target.parentNode.classList.contains('popup_close') ||
-target.classList.contains('popup')) 
-{
-	popupModal.style.display = 'none';
-}
-});
-
-// bigImg 
-
-function showImg (img) { 
-	for (let i = 0; i < bigImg.length; i++) {
-	 if (bigImg[i].id == img) { 
-		bigImg[i].style.display = 'inline-block';
-	 } else {
-		bigImg[i].style.display = 'none';
-	 }
-	}
-}
-
-
+    popupModal.addEventListener('click', function(event){
+        event.preventDefault();
+        if (event.target == popupModal) {
+            popupModal.style.display = 'none';
+        }
+    });
 
 setTimeout( () => {
 	popupModal.style.display = "block";
 }, 60000);
+
+
+// bigImg 
+
+// function showImg (img) { 
+// 	for (let i = 0; i < bigImg.length; i++) {
+// 	 if (bigImg[i].id == img) { 
+// 		bigImg[i].style.display = 'inline-block';
+// 	 } else {
+// 		bigImg[i].style.display = 'none';
+// 	 }
+// 	}
+// }
 	
 }
 

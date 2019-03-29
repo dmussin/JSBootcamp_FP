@@ -11329,9 +11329,93 @@ if ('NodeList' in window && !NodeList.prototype.forEach) {
   !*** ./src/parts/form.js ***!
   \***************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-function form() {}
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+var _Promise = typeof Promise === 'undefined' ? __webpack_require__(/*! es6-promise */ "./node_modules/es6-promise/dist/es6-promise.js").Promise : Promise;
+
+function form() {
+  var message = {
+    loading: 'Загрузка...',
+    success: 'Спасибо! Скоро мы с вами свяжемся',
+    failure: 'Что-то пошло не так :('
+  };
+  var form = document.querySelectorAll('.form'),
+      input = document.getElementsByTagName('input'),
+      userName = document.getElementsByName('user_name'),
+      userPhone = document.getElementsByName('user_phone'),
+      statusMessage = document.createElement('div');
+  statusMessage.classList.add('status');
+
+  function sendForm(form) {
+    var input = form.getElementsByTagName('input');
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      form.appendChild(statusMessage);
+      var formData = new FormData(form);
+
+      function postData(data) {
+        return new _Promise(function (resolve, reject) {
+          var request = new XMLHttpRequest();
+          request.open("POST", "server.php");
+          request.setRequestHeader("Content-Type", "charset=utf-8");
+
+          request.onreadystatechange = function () {
+            if (request.readyState < 4) {
+              resolve();
+            } else if (request.readyState === 4) {
+              if (request.status == 200 && request.status < 3) {
+                resolve();
+              } else {
+                reject();
+              }
+            }
+          };
+
+          request.send(data);
+        });
+      } // End postData
+
+
+      function clearInputs() {
+        for (var i = 0; i < input.length; i++) {
+          input[i].value = '';
+        }
+      }
+
+      clearInputs();
+      postData(formData).then(function () {
+        return statusMessage.innerHTML = message.loading;
+      }).then(function () {
+        return statusMessage.innerHTML = message.success;
+      }).catch(function () {
+        return statusMessage.innerHTML = message.failure;
+      }).then(clearInputs);
+    });
+  }
+
+  for (var i = 0; i < form.length; i++) {
+    sendForm(form[i]);
+  } //Phone number
+
+
+  function onlyNumber(input) {
+    input.onkeyup = function () {
+      return this.value = this.value.replace(/[^0-9,+]/g, "");
+    };
+  }
+
+  _toConsumableArray(userPhone).forEach(function (elem) {
+    return onlyNumber(elem);
+  });
+}
 
 module.exports = form;
 
@@ -11345,53 +11429,55 @@ module.exports = form;
 /***/ (function(module, exports) {
 
 function modal() {
-  //Modal 
-  var buttonEngeneer = document.querySelector('.popup_engineer_btn'),
-      popupEngineer = document.querySelector('.popup_engineer'),
-      callBack = document.querySelectorAll('.phone_link'),
-      glazingPriceBtn = document.querySelectorAll('.glazing_price_btn'),
-      popupCalc = document.querySelector('.popup_calc'),
-      popupCalcClose = document.querySelector('.popup_calc_close'),
-      balconIcons = document.querySelector('.balcon_icons'),
-      bigImg = document.querySelectorAll('.big_img img');
-  popupModal = document.querySelector('.popup');
-  buttonEngeneer.addEventListener('click', function () {
-    popupEngineer.style.display = 'block';
+  //Мodal
+  var popupEngineer = document.querySelector('.popup_engineer'),
+      headerBtn = document.querySelector('.header_btn'),
+      popupClose = document.querySelectorAll('.popup_close');
+  headerBtn.addEventListener('click', function () {
+    popupEngineer.style.display = 'flex';
   });
   popupEngineer.addEventListener('click', function (event) {
-    var target = event.target;
-
-    if (target.classList.contains('popup_close') || target.parentNode.classList.contains('popup_close') || target.classList.contains('popup_engineer')) {
+    if (event.target == modalEngineer) {
       popupEngineer.style.display = 'none';
     }
+  });
+  popupClose[1].addEventListener('click', function () {
+    popupEngineer.style.display = 'none';
   }); //Modal callback
 
-  callBack.forEach(function (element) {
-    element.addEventListener('click', function () {
-      popupModal.style.display = 'block';
-    });
+  var popupModal = document.querySelector('.popup'),
+      callBack = document.querySelectorAll('.phone_link')[1],
+      contactBtn = document.querySelector('.contact_us_wrap');
+  contactBtn.addEventListener('click', function (event) {
+    event.preventDefault();
+    popupModal.style.display = 'flex';
+  });
+  callBack.addEventListener('click', function (event) {
+    event.preventDefault();
+    popupModal.style.display = 'flex';
+  });
+  popupClose[0].addEventListener('click', function () {
+    popupModal.style.display = 'none';
   });
   popupModal.addEventListener('click', function (event) {
-    var target = event.target;
+    event.preventDefault();
 
-    if (target.classList.contains('popup_close') || target.parentNode.classList.contains('popup_close') || target.classList.contains('popup')) {
+    if (event.target == popupModal) {
       popupModal.style.display = 'none';
     }
-  }); // bigImg 
-
-  function showImg(img) {
-    for (var i = 0; i < bigImg.length; i++) {
-      if (bigImg[i].id == img) {
-        bigImg[i].style.display = 'inline-block';
-      } else {
-        bigImg[i].style.display = 'none';
-      }
-    }
-  }
-
+  });
   setTimeout(function () {
     popupModal.style.display = "block";
-  }, 60000);
+  }, 60000); // bigImg 
+  // function showImg (img) { 
+  // 	for (let i = 0; i < bigImg.length; i++) {
+  // 	 if (bigImg[i].id == img) { 
+  // 		bigImg[i].style.display = 'inline-block';
+  // 	 } else {
+  // 		bigImg[i].style.display = 'none';
+  // 	 }
+  // 	}
+  // }
 }
 
 module.exports = modal;
