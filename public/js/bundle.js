@@ -11299,8 +11299,12 @@ window.addEventListener("DOMContentLoaded", function () {
 
   var timer = __webpack_require__(/*! ./parts/timer.js */ "./src/parts/timer.js"),
       form = __webpack_require__(/*! ./parts/form.js */ "./src/parts/form.js"),
+      tabs_glazing = __webpack_require__(/*! ./parts/tabs_glazing.js */ "./src/parts/tabs_glazing.js"),
+      tabs_furnish = __webpack_require__(/*! ./parts/tabs_furnish.js */ "./src/parts/tabs_furnish.js"),
       modal = __webpack_require__(/*! ./parts/modal.js */ "./src/parts/modal.js");
 
+  tabs_glazing();
+  tabs_furnish();
   timer();
   form();
   modal();
@@ -11343,9 +11347,16 @@ module.exports = form;
 function modal() {
   //Modal 
   var buttonEngeneer = document.querySelector('.popup_engineer_btn'),
-      popupEngineer = document.querySelector('.popup_engineer');
+      popupEngineer = document.querySelector('.popup_engineer'),
+      callBack = document.querySelectorAll('.phone_link'),
+      glazingPriceBtn = document.querySelectorAll('.glazing_price_btn'),
+      popupCalc = document.querySelector('.popup_calc'),
+      popupCalcClose = document.querySelector('.popup_calc_close'),
+      balconIcons = document.querySelector('.balcon_icons'),
+      bigImg = document.querySelectorAll('.big_img img');
+  popupModal = document.querySelector('.popup');
   buttonEngeneer.addEventListener('click', function () {
-    popupEngineer.style.display = "block";
+    popupEngineer.style.display = 'block';
   });
   popupEngineer.addEventListener('click', function (event) {
     var target = event.target;
@@ -11355,11 +11366,9 @@ function modal() {
     }
   }); //Modal callback
 
-  var callBack = document.querySelectorAll('.phone_link'),
-      popupModal = document.querySelector('.popup');
   callBack.forEach(function (element) {
     element.addEventListener('click', function () {
-      popupModal.style.display = "block";
+      popupModal.style.display = 'block';
     });
   });
   popupModal.addEventListener('click', function (event) {
@@ -11368,10 +11377,136 @@ function modal() {
     if (target.classList.contains('popup_close') || target.parentNode.classList.contains('popup_close') || target.classList.contains('popup')) {
       popupModal.style.display = 'none';
     }
-  });
+  }); // bigImg 
+
+  function showImg(img) {
+    for (var i = 0; i < bigImg.length; i++) {
+      if (bigImg[i].id == img) {
+        bigImg[i].style.display = 'inline-block';
+      } else {
+        bigImg[i].style.display = 'none';
+      }
+    }
+  }
+
+  setTimeout(function () {
+    popupModal.style.display = "block";
+  }, 60000);
 }
 
 module.exports = modal;
+
+/***/ }),
+
+/***/ "./src/parts/tabs_furnish.js":
+/*!***********************************!*\
+  !*** ./src/parts/tabs_furnish.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function tabs_furnish() {// const decorationRow = document.querySelectorAll('.decoration_row'), 
+  //       decorationSlider = document.querySelector('.decoration_slider'),
+  //       decorationItem = document.querySelectorAll('.decoration_item');
+  // hideTabContent(1, decorationRow);
+}
+
+module.exports = tabs_furnish;
+
+/***/ }),
+
+/***/ "./src/parts/tabs_glazing.js":
+/*!***********************************!*\
+  !*** ./src/parts/tabs_glazing.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function tabs_glazing() {
+  var glazingBlock = document.querySelectorAll('.glazing_block'),
+      glazingSlider = document.querySelector('.glazing_slider'),
+      glazingRow = document.querySelectorAll('.glazing .row');
+  hideTabContent(1, glazingRow);
+  glazingSlider.addEventListener('click', function (event) {
+    var target = event.target;
+
+    if (!target.classList.contains('glazing_block')) {
+      target = target.parentNode;
+    }
+
+    if (target) {
+      for (var i = 0; i < glazingBlock.length; i++) {
+        glazingBlock[i].querySelector('a').classList.remove('active');
+
+        if (glazingBlock[i] == target) {
+          hideTabContent(0, glazingRow);
+          showTabContent(i, glazingRow);
+        }
+      }
+
+      target.querySelector('a').classList.add('active');
+    }
+  });
+
+  function hideTabContent(key, slideItems) {
+    for (var i = key; i < slideItems.length; i++) {
+      slideItems[i].classList.remove('show');
+      slideItems[i].classList.add('hide');
+    }
+  }
+
+  function showTabContent(key, slideItems) {
+    if (slideItems[key].classList.contains('hide')) {
+      slideItems[key].classList.remove('hide');
+      slideItems[key].classList.add('show');
+    }
+  }
+
+  var decorationSlider = document.querySelector('.decoration_slider'),
+      decorationItem = document.querySelectorAll('.decoration_item'),
+      decorationRow = document.querySelectorAll('.decoration_row');
+  hideTabContent(1, decorationRow);
+  decorationSlider.addEventListener('click', function (event) {
+    var target = event.target;
+
+    if (!target.classList.contains('no_click')) {
+      target = target.parentNode;
+    }
+
+    target = target.parentNode;
+
+    if (!target.querySelector('div').classList.contains('after_click')) {
+      for (var i = 0; i < decorationItem.length; i++) {
+        decorationItem[i].querySelector('div').classList.remove('after_click');
+        decorationItem[i].querySelector('div').classList.add('no_click');
+
+        if (decorationItem[i] == target) {
+          hideTabContent(0, decorationRow);
+          showTabContent(i, decorationRow);
+        }
+      }
+
+      target.querySelector('div').classList.add('after_click');
+      target.querySelector('div').classList.remove('no_click');
+    }
+  });
+
+  function hideTabContent(key, slideItems) {
+    for (var i = key; i < slideItems.length; i++) {
+      slideItems[i].classList.remove('show');
+      slideItems[i].classList.add('hide');
+    }
+  }
+
+  function showTabContent(key, slideItems) {
+    if (slideItems[key].classList.contains('hide')) {
+      slideItems[key].classList.remove('hide');
+      slideItems[key].classList.add('show');
+    }
+  }
+}
+
+module.exports = tabs_glazing;
 
 /***/ }),
 

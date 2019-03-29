@@ -9,10 +9,14 @@ window.addEventListener("DOMContentLoaded", function () {
 	let 
 	
 	timer = require('./parts/timer.js'),
-	form = require('./parts/form.js'),
+  form = require('./parts/form.js'),
+  tabs_glazing = require('./parts/tabs_glazing.js'),
+  tabs_furnish = require('./parts/tabs_furnish.js'),
 	modal = require('./parts/modal.js');
-	
-
+  
+  
+tabs_glazing();
+tabs_furnish();
 timer();
 form();
 modal();
