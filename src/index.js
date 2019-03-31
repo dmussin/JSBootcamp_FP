@@ -12,6 +12,7 @@ window.addEventListener("DOMContentLoaded", function () {
   form = require('./parts/form.js'),
   tabs_glazing = require('./parts/tabs_glazing.js'),
   tabs_furnish = require('./parts/tabs_furnish.js'),
+  calc = require('./parts/calc.js'),
 	modal = require('./parts/modal.js');
   
   
@@ -20,6 +21,7 @@ tabs_furnish();
 timer();
 form();
 modal();
+calc();
 
  
 

@@ -6,7 +6,7 @@ function form() {
               failure: 'Что-то пошло не так :(' 
           };
   
-    let form = document.querySelectorAll('.form'),
+    let form = document.querySelectorAll('form'),
         input = document.getElementsByTagName('input'),
         userName = document.getElementsByName('user_name'),
         userPhone = document.getElementsByName('user_phone'),

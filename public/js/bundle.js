@@ -11301,6 +11301,7 @@ window.addEventListener("DOMContentLoaded", function () {
       form = __webpack_require__(/*! ./parts/form.js */ "./src/parts/form.js"),
       tabs_glazing = __webpack_require__(/*! ./parts/tabs_glazing.js */ "./src/parts/tabs_glazing.js"),
       tabs_furnish = __webpack_require__(/*! ./parts/tabs_furnish.js */ "./src/parts/tabs_furnish.js"),
+      calc = __webpack_require__(/*! ./parts/calc.js */ "./src/parts/calc.js"),
       modal = __webpack_require__(/*! ./parts/modal.js */ "./src/parts/modal.js");
 
   tabs_glazing();
@@ -11308,6 +11309,7 @@ window.addEventListener("DOMContentLoaded", function () {
   timer();
   form();
   modal();
+  calc();
 });
 
 if ('NodeList' in window && !NodeList.prototype.forEach) {
@@ -11321,6 +11323,147 @@ if ('NodeList' in window && !NodeList.prototype.forEach) {
     }
   };
 }
+
+/***/ }),
+
+/***/ "./src/parts/calc.js":
+/*!***************************!*\
+  !*** ./src/parts/calc.js ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function calc() {
+  var popupCalcBtn = document.querySelectorAll('.popup_calc_btn'),
+      popupCalcProfileButton = document.querySelector('.popup_calc_profile_button'),
+      popupCalcButton = document.querySelector('.popup_calc_button'),
+      popupCalc = document.querySelector('.popup_calc'),
+      bigImg = document.querySelectorAll('.big_img img'),
+      balconIcons = document.querySelectorAll('.balcon_icons a'),
+      popupCalcProfile = document.querySelector('.popup_calc_profile'),
+      popupCalcEnd = document.querySelector('.popup_calc_end'),
+      popupCalcInput = popupCalc.querySelectorAll('input'),
+      popupCalcSelect = document.querySelector('select'),
+      formCalc = document.querySelectorAll('.form-control_calc'),
+      popupCheck = popupCalcProfile.querySelectorAll('label');
+  var windowSet = {};
+  popupCalcBtn.forEach(function (element) {
+    element.addEventListener('click', function () {
+      popupCalc.style.display = "block";
+      windowSet.type = balconIcons[0].getAttribute('class');
+      console.log(windowSet);
+    });
+  });
+  popupCalc.addEventListener('click', function (event) {
+    var target = event.target;
+
+    if (target.classList.contains('popup_calc_close') || target.parentNode.classList.contains('popup_calc_close') || target.classList.contains('popup_calc')) {
+      popupCalc.style.display = 'none';
+      windowSet = {};
+    }
+  }); //First Win
+
+  balconIcons.forEach(function (element) {
+    element.addEventListener('click', function (event) {
+      event.preventDefault();
+      var typeWindowCalc = event.target.parentNode.getAttribute('class');
+      bigImg.forEach(function (el) {
+        var typeSelectedWindow = el.getAttribute('id');
+
+        if (typeSelectedWindow == typeWindowCalc) {
+          el.style.display = 'inline-block';
+          windowSet.type = typeWindowCalc;
+        } else {
+          el.style.display = 'none';
+        }
+      });
+      console.log(windowSet);
+    });
+  }); //Input
+  // popupCalcInput.forEach(input => {
+  //     input.addEventListener('keyup', function () {
+  //         this.value = this.value.replace(/[^0-9]+/g, '');
+  //         input.textContent = this.value;
+  //     });
+  // });
+
+  formCalc.forEach(function (item) {
+    item.addEventListener('input', function () {
+      item.value = item.value.replace(/[^0-9]+/g, '');
+    });
+    popupCalcButton.addEventListener('click', function () {
+      if (formCalc[0].value == '' || formCalc[0].value == 0 || formCalc[1].value == '' || formCalc[1].value == 0) {} else {
+        popupCalc.style.display = 'none';
+        popupCalcProfile.style.display = 'flex';
+        formCalc[0].value = '';
+        formCalc[1].value = '';
+      }
+    });
+  }); //Second Win
+
+  popupCalcButton.addEventListener('click', function () {
+    if (popupCalcInput[0].value && popupCalcInput[1].value) {
+      popupCalc.style.display = 'none';
+      popupCalcProfile.style.display = 'block';
+      windowSet.width = popupCalcInput[0].value;
+      windowSet.heigh = popupCalcInput[1].value;
+      windowSet.glazingType = popupCalcSelect.options[0].value;
+    } else {
+      popupCalcInput.forEach(function (input) {
+        if (!input.value) {
+          input.focus();
+        }
+      });
+    }
+
+    console.log(windowSet);
+  });
+  popupCalcSelect.addEventListener('change', function () {
+    windowSet.glazingType = this.options[this.selectedIndex].value;
+    console.log(windowSet);
+  }); //Checkbox
+
+  popupCheck.forEach(function (label) {
+    label.addEventListener('change', function (event) {
+      if (event.target.classList.contains('checkbox')) {
+        [].slice.call(document.querySelectorAll('.checkbox')).forEach(function (c) {
+          return c.checked = false;
+        });
+        event.target.checked = true;
+      }
+
+      windowSet.glazingProfile = label.querySelector('.checkbox-custom').getAttribute('id');
+    });
+  });
+  popupCalcProfileButton.addEventListener('click', function () {
+    if (windowSet.glazingProfile) {
+      popupCalcProfile.style.display = 'none';
+      popupCalcEnd.style.display = 'block';
+    }
+  }); //Popup close
+
+  popupCalcProfile.addEventListener('click', function (event) {
+    var target = event.target;
+
+    if (target.classList.contains('popup_calc_profile_close') || target.parentNode.classList.contains('popup_calc_profile_close') || target.classList.contains('popup_calc_profile')) {
+      popupCalcProfile.style.display = 'none';
+      windowSet = {};
+      console.log(windowSet);
+    }
+  }); // Popup Calc
+
+  popupCalcEnd.addEventListener('click', function (event) {
+    var target = event.target;
+
+    if (target.classList.contains('popup_calc_end_close') || target.parentNode.classList.contains('popup_calc_end_close') || target.classList.contains('popup_calc_end')) {
+      popupCalcEnd.style.display = 'none';
+      windowSet = {};
+      console.log(windowSet);
+    }
+  });
+}
+
+module.exports = calc;
 
 /***/ }),
 
@@ -11347,7 +11490,7 @@ function form() {
     success: 'Спасибо! Скоро мы с вами свяжемся',
     failure: 'Что-то пошло не так :('
   };
-  var form = document.querySelectorAll('.form'),
+  var form = document.querySelectorAll('form'),
       input = document.getElementsByTagName('input'),
       userName = document.getElementsByName('user_name'),
       userPhone = document.getElementsByName('user_phone'),
@@ -11437,7 +11580,7 @@ function modal() {
     popupEngineer.style.display = 'flex';
   });
   popupEngineer.addEventListener('click', function (event) {
-    if (event.target == modalEngineer) {
+    if (event.target == popupEngineer) {
       popupEngineer.style.display = 'none';
     }
   });
@@ -11544,21 +11687,6 @@ function tabs_glazing() {
       target.querySelector('a').classList.add('active');
     }
   });
-
-  function hideTabContent(key, slideItems) {
-    for (var i = key; i < slideItems.length; i++) {
-      slideItems[i].classList.remove('show');
-      slideItems[i].classList.add('hide');
-    }
-  }
-
-  function showTabContent(key, slideItems) {
-    if (slideItems[key].classList.contains('hide')) {
-      slideItems[key].classList.remove('hide');
-      slideItems[key].classList.add('show');
-    }
-  }
-
   var decorationSlider = document.querySelector('.decoration_slider'),
       decorationItem = document.querySelectorAll('.decoration_item'),
       decorationRow = document.querySelectorAll('.decoration_row');
@@ -11566,7 +11694,7 @@ function tabs_glazing() {
   decorationSlider.addEventListener('click', function (event) {
     var target = event.target;
 
-    if (!target.classList.contains('no_click')) {
+    if (!target.classList.contains('no_click') && !target.classList.contains('after_click')) {
       target = target.parentNode;
     }
 
@@ -11586,6 +11714,8 @@ function tabs_glazing() {
       target.querySelector('div').classList.add('after_click');
       target.querySelector('div').classList.remove('no_click');
     }
+
+    target.querySelector('a').focus();
   });
 
   function hideTabContent(key, slideItems) {

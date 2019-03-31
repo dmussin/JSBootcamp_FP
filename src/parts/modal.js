@@ -11,7 +11,7 @@ let popupEngineer = document.querySelector('.popup_engineer'),
     });
 
     popupEngineer.addEventListener('click', function(event){
-        if (event.target == modalEngineer) {
+        if (event.target == popupEngineer) {
             popupEngineer.style.display = 'none';
         }
 	});

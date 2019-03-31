@@ -23,21 +23,6 @@ function tabs_glazing() {
 		}
 	});
 
-	function hideTabContent(key, slideItems) {
-		for (let i = key; i < slideItems.length; i++) {
-			slideItems[i].classList.remove('show');
-			slideItems[i].classList.add('hide');
-		}
-	}
-
-	function showTabContent(key, slideItems) {
-		if (slideItems[key].classList.contains('hide')) {
-			slideItems[key].classList.remove('hide');
-			slideItems[key].classList.add('show');
-		}
-	}
-
-
 
 
 	const decorationSlider = document.querySelector('.decoration_slider'),
@@ -48,7 +33,7 @@ function tabs_glazing() {
 
 	decorationSlider.addEventListener('click', function (event) {
 		let target = event.target;
-		if (!target.classList.contains('no_click')) {
+		if (!target.classList.contains('no_click') && !target.classList.contains('after_click')) {
 			target = target.parentNode;
 		}
 		target = target.parentNode;
@@ -65,6 +50,8 @@ function tabs_glazing() {
 			target.querySelector('div').classList.add('after_click');
 			target.querySelector('div').classList.remove('no_click');
 		}
+
+		target.querySelector('a').focus();
 	});
 
 	function hideTabContent(key, slideItems) {
