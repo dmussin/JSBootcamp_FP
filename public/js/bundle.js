@@ -11490,31 +11490,83 @@ function form() {
     success: 'Спасибо! Скоро мы с вами свяжемся',
     failure: 'Что-то пошло не так :('
   };
+  statusMessage = document.createElement('div');
   var form = document.querySelectorAll('form'),
-      input = document.getElementsByTagName('input'),
+      input = document.querySelectorAll('input'),
       userName = document.getElementsByName('user_name'),
       userPhone = document.getElementsByName('user_phone'),
-      statusMessage = document.createElement('div');
-  statusMessage.classList.add('status');
-
-  function sendForm(form) {
-    var input = form.getElementsByTagName('input');
-    form.addEventListener('submit', function (event) {
-      event.preventDefault();
-      form.appendChild(statusMessage);
-      var formData = new FormData(form);
+      inputTel = document.getElementsByName('user_phone'),
+      formCalc = document.querySelectorAll('.form-control_calc'),
+      checkbox = document.querySelectorAll('.checkbox'),
+      popupCalcEnd = document.querySelector('.popup_calc_end'),
+      popupEngineer = document.querySelector('.popup_engineer'),
+      popup = document.querySelector('.popup');
+  var typeImg = document.querySelectorAll('.type_img');
+  typeImg.forEach(function (item) {
+    item.addEventListener('click', function () {
+      var attribute = item.getAttribute("alt");
+      formCalc.balcony = attribute;
+    });
+  });
+  formCalc.forEach(function (item) {
+    item.addEventListener('change', function () {
+      if (item.getAttribute("id") == 'width') {
+        formCalc.width = item.value;
+      } else {
+        formCalc.height = item.value;
+      }
+    });
+  });
+  var glazingType = document.getElementById('view_type');
+  glazingType.addEventListener('change', function () {
+    formCalc.type = glazingType.options[glazingType.selectedIndex].value;
+  });
+  checkbox.forEach(function (item) {
+    item.addEventListener('click', function () {
+      if (item.getAttribute("id") == 'checkbox-1') {
+        formCalc.checkbox = 'Холодное';
+      } else {
+        formCalc.checkbox = 'Теплое';
+      }
+    });
+  });
+  var modalCalcInput = document.querySelectorAll('.modal-calc');
+  modalCalcInput.forEach(function (item) {
+    item.addEventListener('change', function () {
+      if (item.getAttribute("id") == 'modal-name') {
+        formCalc.name = item.value;
+      } else {
+        formCalc.tel = item.value;
+      }
+    });
+  });
+  var formCalculator = {
+    height: '',
+    width: '',
+    name: '',
+    tel: '',
+    balcony: 'Тип1',
+    type: 'Деревянное остекление',
+    checkbox: ''
+  };
+  form.forEach(function sendForm(item) {
+    item.addEventListener('submit', function (e) {
+      e.preventDefault();
+      item.appendChild(statusMessage);
+      var jSonString = JSON.stringify(formCalculator);
+      var formData = new FormData(item);
 
       function postData(data) {
         return new _Promise(function (resolve, reject) {
           var request = new XMLHttpRequest();
-          request.open("POST", "server.php");
-          request.setRequestHeader("Content-Type", "charset=utf-8");
+          request.open('POST', 'server.php');
+          request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
 
           request.onreadystatechange = function () {
             if (request.readyState < 4) {
               resolve();
             } else if (request.readyState === 4) {
-              if (request.status == 200 && request.status < 3) {
+              if (request.status == 200) {
                 resolve();
               } else {
                 reject();
@@ -11522,30 +11574,38 @@ function form() {
             }
           };
 
-          request.send(data);
+          if (item.classList.contains('form-end')) {
+            request.send(jSonString);
+          } else {
+            request.send(data);
+          }
         });
       } // End postData
 
 
-      function clearInputs() {
-        for (var i = 0; i < input.length; i++) {
-          input[i].value = '';
-        }
+      function clearInput() {
+        input.forEach(function (item) {
+          item.value = '';
+        });
       }
 
-      clearInputs();
+      ;
       postData(formData).then(function () {
-        return statusMessage.innerHTML = message.loading;
+        statusMessage.textContent = message.loading;
       }).then(function () {
-        return statusMessage.innerHTML = message.success;
+        statusMessage.innerHTML = message.success;
+        setTimeout(func, 3000);
       }).catch(function () {
-        return statusMessage.innerHTML = message.failure;
-      }).then(clearInputs);
+        statusMessage.innerHTML = message.failure;
+      }).then(clearInput);
     });
-  }
+  });
 
-  for (var i = 0; i < form.length; i++) {
-    sendForm(form[i]);
+  function func() {
+    statusMessage.innerHTML = "";
+    popupCalcEnd.style.display = 'none';
+    popupEngineer.style.display = 'none';
+    popup.style.display = 'none';
   } //Phone number
 
 
@@ -11648,7 +11708,7 @@ module.exports = modal;
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-function tabs_furnish() {//    
+function tabs_furnish() {//
 }
 
 module.exports = tabs_furnish;
