@@ -11474,6 +11474,9 @@ module.exports = calc;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -11485,129 +11488,57 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 var _Promise = typeof Promise === 'undefined' ? __webpack_require__(/*! es6-promise */ "./node_modules/es6-promise/dist/es6-promise.js").Promise : Promise;
 
 function form() {
-  var message = {
-    loading: 'Загрузка...',
-    success: 'Спасибо! Скоро мы с вами свяжемся',
-    failure: 'Что-то пошло не так :('
-  };
-  statusMessage = document.createElement('div');
-  var form = document.querySelectorAll('form'),
-      input = document.querySelectorAll('input'),
-      userName = document.getElementsByName('user_name'),
-      userPhone = document.getElementsByName('user_phone'),
-      inputTel = document.getElementsByName('user_phone'),
-      formCalc = document.querySelectorAll('.form-control_calc'),
-      checkbox = document.querySelectorAll('.checkbox'),
+  var popupCalcButton = document.querySelector('.popup_calc_button'),
       popupCalcEnd = document.querySelector('.popup_calc_end'),
-      popupEngineer = document.querySelector('.popup_engineer'),
-      popup = document.querySelector('.popup');
-  var typeImg = document.querySelectorAll('.type_img');
-  typeImg.forEach(function (item) {
-    item.addEventListener('click', function () {
-      var attribute = item.getAttribute("alt");
-      formCalc.balcony = attribute;
+      popupCalcProfileButton = document.querySelector('.popup_calc_profile_button'),
+      popupCalcBtn = document.querySelectorAll('.popup_calc_btn'),
+      userPhone = document.getElementsByName('user_phone'),
+      popupCalcSelect = document.querySelector('select'),
+      popupCalc = document.querySelector('.popup_calc'),
+      popupCalcInput = popupCalc.querySelectorAll('input'),
+      balconIcons = document.querySelectorAll('.balcon_icons a'),
+      bigImg = document.querySelectorAll('.big_img img'),
+      popupCalcProfile = document.querySelector('.popup_calc_profile'),
+      popupCalcLabel = popupCalcProfile.querySelectorAll('label');
+  var windowSettings = {};
+  popupCalcBtn.forEach(function (element) {
+    element.addEventListener('click', function () {
+      popupCalc.style.display = "block";
+      windowSettings.type = balconIcons[0].getAttribute('class');
     });
   });
-  formCalc.forEach(function (item) {
-    item.addEventListener('change', function () {
-      if (item.getAttribute("id") == 'width') {
-        formCalc.width = item.value;
-      } else {
-        formCalc.height = item.value;
-      }
+  popupCalc.addEventListener('click', function (event) {
+    var target = event.target;
+
+    if (target.classList.contains('popup_calc_close') || target.parentNode.classList.contains('popup_calc_close') || target.classList.contains('popup_calc')) {
+      popupCalc.style.display = 'none';
+      windowSettings = {};
+    }
+  });
+  balconIcons.forEach(function (element) {
+    element.addEventListener('click', function (event) {
+      event.preventDefault();
+      var typeWindowCalc = event.target.parentNode.getAttribute('class');
+      bigImg.forEach(function (el) {
+        var typeSelectedWindow = el.getAttribute('id');
+
+        if (typeSelectedWindow == typeWindowCalc) {
+          el.style.display = 'inline-block';
+          windowSettings.type = typeWindowCalc;
+        } else {
+          el.style.display = 'none';
+        }
+      });
+      console.log(windowSettings);
     });
-  });
-  var glazingType = document.getElementById('view_type');
-  glazingType.addEventListener('change', function () {
-    formCalc.type = glazingType.options[glazingType.selectedIndex].value;
-  });
-  checkbox.forEach(function (item) {
-    item.addEventListener('click', function () {
-      if (item.getAttribute("id") == 'checkbox-1') {
-        formCalc.checkbox = 'Холодное';
-      } else {
-        formCalc.checkbox = 'Теплое';
-      }
+  }); // Input numbers 
+
+  popupCalcInput.forEach(function (input) {
+    input.addEventListener('keyup', function () {
+      this.value = this.value.replace(/[^0-9]+/g, '');
+      input.textContent = this.value;
     });
-  });
-  var modalCalcInput = document.querySelectorAll('.modal-calc');
-  modalCalcInput.forEach(function (item) {
-    item.addEventListener('change', function () {
-      if (item.getAttribute("id") == 'modal-name') {
-        formCalc.name = item.value;
-      } else {
-        formCalc.tel = item.value;
-      }
-    });
-  });
-  var formCalculator = {
-    height: '',
-    width: '',
-    name: '',
-    tel: '',
-    balcony: 'Тип1',
-    type: 'Деревянное остекление',
-    checkbox: ''
-  };
-  form.forEach(function sendForm(item) {
-    item.addEventListener('submit', function (e) {
-      e.preventDefault();
-      item.appendChild(statusMessage);
-      var jSonString = JSON.stringify(formCalculator);
-      var formData = new FormData(item);
-
-      function postData(data) {
-        return new _Promise(function (resolve, reject) {
-          var request = new XMLHttpRequest();
-          request.open('POST', 'server.php');
-          request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-
-          request.onreadystatechange = function () {
-            if (request.readyState < 4) {
-              resolve();
-            } else if (request.readyState === 4) {
-              if (request.status == 200) {
-                resolve();
-              } else {
-                reject();
-              }
-            }
-          };
-
-          if (item.classList.contains('form-end')) {
-            request.send(jSonString);
-          } else {
-            request.send(data);
-          }
-        });
-      } // End postData
-
-
-      function clearInput() {
-        input.forEach(function (item) {
-          item.value = '';
-        });
-      }
-
-      ;
-      postData(formData).then(function () {
-        statusMessage.textContent = message.loading;
-      }).then(function () {
-        statusMessage.innerHTML = message.success;
-        setTimeout(func, 3000);
-      }).catch(function () {
-        statusMessage.innerHTML = message.failure;
-      }).then(clearInput);
-    });
-  });
-
-  function func() {
-    statusMessage.innerHTML = "";
-    popupCalcEnd.style.display = 'none';
-    popupEngineer.style.display = 'none';
-    popup.style.display = 'none';
-  } //Phone number
-
+  }); //Phone number only
 
   function onlyNumber(input) {
     input.onkeyup = function () {
@@ -11618,6 +11549,151 @@ function form() {
   _toConsumableArray(userPhone).forEach(function (elem) {
     return onlyNumber(elem);
   });
+
+  popupCalcButton.addEventListener('click', function () {
+    if (popupCalcInput[0].value && popupCalcInput[1].value) {
+      popupCalc.style.display = 'none';
+      popupCalcProfile.style.display = 'block';
+      windowSettings.width = popupCalcInput[0].value;
+      windowSettings.heigh = popupCalcInput[1].value;
+      windowSettings.glazingType = popupCalcSelect.options[0].value;
+    } else {
+      popupCalcInput.forEach(function (input) {
+        if (!input.value) {
+          input.focus();
+        }
+      });
+    }
+  });
+  popupCalcSelect.addEventListener('change', function () {
+    windowSettings.glazingType = this.options[this.selectedIndex].value;
+  }); //checkbox
+
+  popupCalcLabel.forEach(function (label) {
+    label.addEventListener('change', function (event) {
+      if (event.target.classList.contains('checkbox')) {
+        [].slice.call(document.querySelectorAll('.checkbox')).forEach(function (c) {
+          return c.checked = false;
+        });
+        event.target.checked = true;
+      }
+
+      windowSettings.glazingProfile = label.querySelector('.checkbox-custom').getAttribute('id');
+    });
+  });
+  popupCalcProfileButton.addEventListener('click', function () {
+    if (windowSettings.glazingProfile) {
+      popupCalcProfile.style.display = 'none';
+      popupCalcEnd.style.display = 'block';
+    }
+  });
+  popupCalcProfile.addEventListener('click', function (event) {
+    var target = event.target;
+
+    if (target.classList.contains('popup_calc_profile_close') || target.parentNode.classList.contains('popup_calc_profile_close') || target.classList.contains('popup_calc_profile')) {
+      popupCalcProfile.style.display = 'none';
+      windowSettings = {};
+    }
+  }); //Calc close
+
+  popupCalcEnd.addEventListener('click', function (event) {
+    var target = event.target;
+
+    if (target.classList.contains('popup_calc_end_close') || target.parentNode.classList.contains('popup_calc_end_close') || target.classList.contains('popup_calc_end')) {
+      popupCalcEnd.style.display = 'none';
+      windowSettings = {};
+    }
+  }); // let formCalc = {
+  //   name: '',
+  //   tel: '',
+  //   balcony: 'Тип1',
+  //   width: '',
+  //   height: '',
+  //   type: 'Деревянное остекление',
+  //   checkbox: ''
+  // };
+  //form
+
+  var freeMasterForms = document.querySelectorAll('.main_form');
+  freeMasterForms.forEach(function (form) {
+    sendForm(form);
+  });
+  var popupForm = document.querySelector('.popup form');
+  sendForm(popupForm);
+  var popupEngineerForm = document.querySelector('.popup_engineer form');
+  sendForm(popupEngineerForm);
+  var popupCalcEndForms = document.querySelector('.popup_calc_end form');
+  sendForm(popupCalcEndForms, windowSettings);
+
+  function sendForm(form) {
+    var object = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+    var statusMessage = document.createElement('div'),
+        formInputs = form.querySelectorAll('input');
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      form.appendChild(statusMessage);
+      var formData = new FormData(form);
+      postData(formData, object).then(function () {
+        statusMessage.innerHTML = 'Спасибо! Скоро мы с вами свяжемся';
+      }).catch(function () {
+        statusMessage.innerHTML = 'Что-то пошло не так :(';
+      }).then(clearInput2(formInputs)).then(clearInput1).then(clearObject(object));
+    });
+  }
+
+  function postData(data) {
+    var object = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+    return new _Promise(function (resolve, reject) {
+      var request = new XMLHttpRequest();
+      request.open('POST', 'server.php');
+      request.setRequestHeader('Content-Type', 'aplication/json charset=utf-8');
+      var json = formDataToJSON(data, object);
+
+      request.onreadystatechange = function () {
+        if (request.readyState == 4) {
+          if (request.status == 200) {
+            resolve();
+          } else {
+            reject();
+          }
+        }
+      };
+
+      request.send(json);
+    });
+  }
+
+  function formDataToJSON(formData) {
+    var object = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+    var obj = {};
+    formData.forEach(function (value, key) {
+      obj[key] = value;
+    });
+
+    if (object) {
+      return JSON.stringify(Object.assign(object, obj));
+    } else {
+      return JSON.stringify(obj);
+    }
+  }
+
+  function clearInput1() {
+    popupCalcInput.forEach(function (item) {
+      item.value = '';
+    });
+  }
+
+  ;
+
+  function clearInput2(inputs) {
+    for (var i = 0; i < inputs.length; i++) {
+      inputs[i].value = '';
+    }
+  }
+
+  function clearObject(object) {
+    object = {};
+  }
 }
 
 module.exports = form;
