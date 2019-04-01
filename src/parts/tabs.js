@@ -1,4 +1,6 @@
-function tabs_glazing() {
+'use strict';
+
+function tabs() {
 	const glazingBlock = document.querySelectorAll('.glazing_block'), 
 		  glazingSlider = document.querySelector('.glazing_slider'),
 		  glazingRow = document.querySelectorAll('.glazing .row');
@@ -70,4 +72,5 @@ function tabs_glazing() {
 
 }
 
-module.exports = tabs_glazing;
+
+module.exports = tabs;

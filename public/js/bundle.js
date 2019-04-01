@@ -11299,13 +11299,13 @@ window.addEventListener("DOMContentLoaded", function () {
 
   var timer = __webpack_require__(/*! ./parts/timer.js */ "./src/parts/timer.js"),
       form = __webpack_require__(/*! ./parts/form.js */ "./src/parts/form.js"),
-      tabs_glazing = __webpack_require__(/*! ./parts/tabs_glazing.js */ "./src/parts/tabs_glazing.js"),
-      tabs_furnish = __webpack_require__(/*! ./parts/tabs_furnish.js */ "./src/parts/tabs_furnish.js"),
-      calc = __webpack_require__(/*! ./parts/calc.js */ "./src/parts/calc.js"),
+      tabs = __webpack_require__(/*! ./parts/tabs.js */ "./src/parts/tabs.js"),
+      // tabs_furnish = require('./parts/tabs_furnish.js'),
+  calc = __webpack_require__(/*! ./parts/calc.js */ "./src/parts/calc.js"),
       modal = __webpack_require__(/*! ./parts/modal.js */ "./src/parts/modal.js");
 
-  tabs_glazing();
-  tabs_furnish();
+  tabs(); // tabs_furnish();
+
   timer();
   form();
   modal();
@@ -11632,40 +11632,85 @@ module.exports = form;
 /***/ (function(module, exports) {
 
 function modal() {
-  //Мodal
-  var popupEngineer = document.querySelector('.popup_engineer'),
-      headerBtn = document.querySelector('.header_btn'),
-      popupClose = document.querySelectorAll('.popup_close');
-  headerBtn.addEventListener('click', function () {
-    popupEngineer.style.display = 'flex';
+  // //Мodal
+  // let popupEngineer = document.querySelector('.popup_engineer'),
+  // 	headerBtn = document.querySelector('.header_btn'),
+  //     popupClose = document.querySelectorAll('.popup_close');
+  //     headerBtn.addEventListener('click', function(){
+  //         popupEngineer.style.display = 'flex';
+  //     });
+  //     popupEngineer.addEventListener('click', function(event){
+  //         if (event.target == popupEngineer) {
+  //             popupEngineer.style.display = 'none';
+  //         }
+  // 	});
+  // 	popupClose[1].addEventListener('click', function(){
+  //         popupEngineer.style.display = 'none';
+  //     });
+  //     //Modal callback
+  //     let popupModal = document.querySelector('.popup'),
+  // 	    callBack = document.querySelectorAll('.phone_link')[1],
+  // 		contactBtn = document.querySelector('.contact_us_wrap');
+  //     contactBtn.addEventListener('click', function(event){
+  //         event.preventDefault();
+  //         popupModal.style.display = 'flex';
+  //     });
+  //     callBack.addEventListener('click', function(event){
+  //         event.preventDefault();
+  //         popupModal.style.display = 'flex';
+  //     });
+  //     popupClose[0].addEventListener('click', function(){
+  //         popupModal.style.display = 'none';
+  //     });
+  //     popupModal.addEventListener('click', function(event){
+  //         event.preventDefault();
+  //         if (event.target == popupModal) {
+  //             popupModal.style.display = 'none';
+  //         }
+  //     });
+
+  /*               Модальное окно "Вызова инженера"               */
+  //////////////////////////////////////////////////////////////////
+  var engineerButton = document.querySelector('.popup_engineer_btn'),
+      // Кнопка вызова
+  popupEngineer = document.querySelector('.popup_engineer'); // Модальное окно
+
+  /* Показ окна */
+
+  engineerButton.addEventListener('click', function () {
+    popupEngineer.style.display = "block";
   });
+  /* Закрытие окна */
+
   popupEngineer.addEventListener('click', function (event) {
-    if (event.target == popupEngineer) {
+    var target = event.target;
+
+    if (target.classList.contains('popup_close') || target.parentNode.classList.contains('popup_close') || target.classList.contains('popup_engineer')) {
       popupEngineer.style.display = 'none';
     }
-  });
-  popupClose[1].addEventListener('click', function () {
-    popupEngineer.style.display = 'none';
-  }); //Modal callback
+  }); //////////////////////////////////////////////////////////////////
 
-  var popupModal = document.querySelector('.popup'),
-      callBack = document.querySelectorAll('.phone_link')[1],
-      contactBtn = document.querySelector('.contact_us_wrap');
-  contactBtn.addEventListener('click', function (event) {
-    event.preventDefault();
-    popupModal.style.display = 'flex';
+  /*               Модальное окно "Обратного звонка"              */
+  //////////////////////////////////////////////////////////////////
+
+  var phoneLink = document.querySelectorAll('.phone_link'),
+      // Кнопка вызова
+  popupModal = document.querySelector('.popup'); // Модальное окно
+
+  /* Показ окна */
+
+  phoneLink.forEach(function (element) {
+    element.addEventListener('click', function () {
+      event.preventDefault();
+      popupModal.style.display = "block";
+    });
   });
-  callBack.addEventListener('click', function (event) {
-    event.preventDefault();
-    popupModal.style.display = 'flex';
-  });
-  popupClose[0].addEventListener('click', function () {
-    popupModal.style.display = 'none';
-  });
+  /* Закрытие окна */
+
   popupModal.addEventListener('click', function (event) {
-    event.preventDefault();
+    var target = event.target;
 
-    if (event.target == popupModal) {
+    if (target.classList.contains('popup_close') || target.parentNode.classList.contains('popup_close') || target.classList.contains('popup')) {
       popupModal.style.display = 'none';
     }
   });
@@ -11701,28 +11746,17 @@ module.exports = modal;
 
 /***/ }),
 
-/***/ "./src/parts/tabs_furnish.js":
-/*!***********************************!*\
-  !*** ./src/parts/tabs_furnish.js ***!
-  \***********************************/
+/***/ "./src/parts/tabs.js":
+/*!***************************!*\
+  !*** ./src/parts/tabs.js ***!
+  \***************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-function tabs_furnish() {//
-}
+"use strict";
 
-module.exports = tabs_furnish;
 
-/***/ }),
-
-/***/ "./src/parts/tabs_glazing.js":
-/*!***********************************!*\
-  !*** ./src/parts/tabs_glazing.js ***!
-  \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-function tabs_glazing() {
+function tabs() {
   var glazingBlock = document.querySelectorAll('.glazing_block'),
       glazingSlider = document.querySelector('.glazing_slider'),
       glazingRow = document.querySelectorAll('.glazing .row');
@@ -11793,7 +11827,7 @@ function tabs_glazing() {
   }
 }
 
-module.exports = tabs_glazing;
+module.exports = tabs;
 
 /***/ }),
 
