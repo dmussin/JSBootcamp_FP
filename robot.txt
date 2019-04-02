@@ -1,0 +1,9 @@
+User-agent: Googlebot
+Disallow: /slick/
+Disallow: public/js
+Disallow: public/slick
+Disallow: public/less
+Disallow: public/img
+Disallow: public/css
+Allow: /public
+Crawl-delay: 3
